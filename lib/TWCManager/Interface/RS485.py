@@ -3,6 +3,12 @@ class RS485:
     import serial
     import time
 
+    from gpiozero import LED
+
+    Tx_Enable = LED(17)         #setup control of transmitter
+    Tx_Enable.off()             #should be off on boot, but just make sure it is off on startup in case the script crashed/killed with it on and is being restarted without rebooting.
+
+
     baud = 9600
     debugLevel = 0
     enabled = True
@@ -91,6 +97,9 @@ class RS485:
         msg = bytearray(b"\xc0" + msg + b"\xc0")
         self.master.debugLog(9, "IfaceRS485", "Tx@: " + self.master.hex_str(msg))
 
-        self.ser.write(msg)
+        self.Tx_Enable.on()      #turn the transmitter on
+        self.ser.write(msg)      #write the message
+        self.ser.flush()         #flush write buffer so everything is totally transmitted before turning the transmitter back off
+        self.Tx_Enable.off()     #turn the transmitter off
 
         self.timeLastTx = self.time.time()
