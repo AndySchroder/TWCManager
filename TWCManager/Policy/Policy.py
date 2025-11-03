@@ -1,5 +1,4 @@
 import time
-from ww import f
 from termcolor import colored
 
 
@@ -144,9 +143,7 @@ class Policy:
                 self.master.debugLog(
                     7,
                     "Policy",
-                    f(
-                        "All policy conditions have matched. Policy chosen is {colored(policy['name'], 'red')}"
-                    ),
+                    f"All policy conditions have matched. Policy chosen is {colored(policy['name'], 'red')}",
                 )
                 self.enforcePolicy(policy, matched)
 
@@ -171,7 +168,7 @@ class Policy:
             self.master.debugLog(
                 1,
                 "Policy",
-                f("New policy selected; changing to {colored(policy['name'], 'red')}"),
+                f"New policy selected; changing to {colored(policy['name'], 'red')}",
             )
             self.active_policy = str(policy["name"])
 
@@ -269,9 +266,7 @@ class Policy:
         self.master.debugLog(
             8,
             "Policy",
-            f(
-                "Evaluating Policy match ({colored(match, 'red')}), condition ({colored(condition, 'red')}), value ({colored(value, 'red')}), iteration ({colored(iter, 'red')})"
-            ),
+            f"Evaluating Policy match ({colored(match, 'red')}), condition ({colored(condition, 'red')}), value ({colored(value, 'red')}), iteration ({colored(iter, 'red')})",
         )
 
         match = self.policyValue(match)

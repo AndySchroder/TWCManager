@@ -4,7 +4,6 @@ from termcolor import colored
 import threading
 import time
 import urllib.parse
-from ww import f
 
 
 class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):

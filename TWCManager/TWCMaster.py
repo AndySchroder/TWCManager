@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-from lib.TWCManager.TWCSlave import TWCSlave
+from .TWCSlave import TWCSlave
 from datetime import datetime
 import json
 import os.path
@@ -8,7 +8,6 @@ import queue
 from termcolor import colored
 import threading
 import time
-from ww import f
 
 
 class TWCMaster:
@@ -136,9 +135,9 @@ class TWCMaster:
         if self.debugLevel >= minlevel:
             print(
                 colored(self.time_now() + " ", "yellow")
-                + colored(f("{function}"), "green")
-                + colored(f(" {minlevel} "), "cyan")
-                + f("{message}")
+                + colored(f"{function}", "green")
+                + colored(f" {minlevel} ", "cyan")
+                + f"{message}"
             )
 
     def deleteBackgroundTask(self, task):
@@ -557,9 +556,7 @@ class TWCMaster:
         if not module["ref"] and not module["modulename"]:
             debugLog(
                 2,
-                f(
-                    "registerModule called for module {colored(module['name'], 'red')} without an existing reference or a module to instantiate."
-                ),
+                f"registerModule called for module {colored(module['name'], 'red')} without an existing reference or a module to instantiate.",
             )
         elif module["ref"]:
             # If the reference is passed, it means this module has already been
@@ -574,15 +571,13 @@ class TWCMaster:
                 self.debugLog(
                     7,
                     "TWCMaster",
-                    f("Registered module {colored(module['name'], 'red')}"),
+                    f"Registered module {colored(module['name'], 'red')}",
                 )
             else:
                 self.debugLog(
                     7,
                     "TWCMaster",
-                    f(
-                        "Avoided re-registration of module {colored(module['name'], 'red')}, which has already been loaded"
-                    ),
+                    f"Avoided re-registration of module {colored(module['name'], 'red')}, which has already been loaded",
                 )
 
     def releaseBackgroundTasksLock(self):

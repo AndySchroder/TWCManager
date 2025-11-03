@@ -1,7 +1,6 @@
 # HomeAssistant Status Output
 # Publishes the provided sensor key and value pair to a HomeAssistant instance
 
-from ww import f
 
 
 class HASSStatus:
@@ -75,9 +74,7 @@ class HASSStatus:
                 self.master.debugLog(
                     8,
                     "HASSStatus",
-                    f(
-                        "Sending POST request to HomeAssistant for sensor {sensor} (value {value})."
-                    ),
+                    f"Sending POST request to HomeAssistant for sensor {sensor} (value {value}).",
                 )
                 self.requests.post(
                     url, json={"state": value}, timeout=self.timeout, headers=headers

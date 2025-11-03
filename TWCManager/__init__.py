@@ -40,8 +40,7 @@ import time
 import traceback
 from datetime import datetime
 import threading
-from ww import f
-from lib.TWCManager.TWCMaster import TWCMaster
+from .TWCMaster import TWCMaster
 
 # Define available modules for the instantiator
 # All listed modules will be loaded at boot time
@@ -113,8 +112,8 @@ def debugLog(minlevel, message):        #note, several other files have their ow
         print(
             colored(master.time_now() + " ", "yellow")
             + colored("TWCManager", "green")
-            + colored(f(" {minlevel} "), "cyan")
-            + f("{message}")
+            + colored(f" {minlevel} ", "cyan")
+            + f"{message}"
         )
 
 
@@ -237,49 +236,43 @@ def update_statuses():
     # Print a status update if we are on track green energy showing the
     # generation and consumption figures
     maxamps = master.getMaxAmpsToDivideAmongSlaves()
-    maxampsDisplay = f("{maxamps:.2f}A")
+    maxampsDisplay = f"{maxamps:.2f}A"
     if master.getModuleByName("Policy").policyIsGreen():
         genwatts = master.getGeneration()
         conwatts = master.getConsumption()
         chgwatts = master.getChargerLoad()
-        genwattsDisplay = f("{genwatts:.0f}W")
-        conwattsDisplay = f("{conwatts:.0f}W")
-        chgwattsDisplay = f("{chgwatts:.0f}W")
+        genwattsDisplay = f"{genwatts:.0f}W"
+        conwattsDisplay = f"{conwatts:.0f}W"
+        chgwattsDisplay = f"{chgwatts:.0f}W"
         debugLog(
             1,
-            f(
-                "Green energy generates {colored(genwattsDisplay, 'magenta')}, Consumption {colored(conwattsDisplay, 'magenta')}, Charger Load {colored(chgwattsDisplay, 'magenta')}"
-            ),
+            f"Green energy generates {colored(genwattsDisplay, 'magenta')}, Consumption {colored(conwattsDisplay, 'magenta')}, Charger Load {colored(chgwattsDisplay, 'magenta')}",
         )
         nominalOffer = (
             genwatts
             - (conwatts - (chgwatts if config["config"]["subtractChargerLoad"] else 0))
         ) / 240
         if abs(maxamps - nominalOffer) > 0.005:
-            nominalOfferDisplay = f("{nominalOffer:.2f}A")
+            nominalOfferDisplay = f"{nominalOffer:.2f}A"
             debugLog(
                 10,
-                f(
-                    "Offering {maxampsDisplay} instead of {nominalOfferDisplay} to compensate for inexact current draw"
-                ),
+                f"Offering {maxampsDisplay} instead of {nominalOfferDisplay} to compensate for inexact current draw",
             )
             conwatts = genwatts - (maxamps * 240)
-        generation = f("{genwatts / 240:.2f}A")
-        consumption = f("{conwatts / 240:.2f}A")
+        generation = f"{genwatts / 240:.2f}A"
+        consumption = f"{conwatts / 240:.2f}A"
         debugLog(
             1,
-            f(
-                "Limiting charging to {colored(generation, 'magenta')} - {colored(consumption, 'magenta')} = {colored(maxampsDisplay, 'magenta')}."
-            ),
+            f"Limiting charging to {colored(generation, 'magenta')} - {colored(consumption, 'magenta')} = {colored(maxampsDisplay, 'magenta')}.",
         )
 
     else:
         # For all other modes, simply show the Amps to charge at
-        debugLog(1, f("Limiting charging to {colored(maxampsDisplay, 'magenta')}."))
+        debugLog(1, f"Limiting charging to {colored(maxampsDisplay, 'magenta')}.")
 
     # Print minimum charge for all charging policies
-    minchg = f("{config['config']['minAmpsPerTWC']}A")
-    debugLog(1, f("Charge when above {colored(minchg, 'magenta')} (minAmpsPerTWC)."))
+    minchg = f"{config['config']['minAmpsPerTWC']}A"
+    debugLog(1, f"Charge when above {colored(minchg, 'magenta')} (minAmpsPerTWC).")
 
     # Update Sensors with min/max amp values
     for module in master.getModulesByType("Status"):
@@ -328,7 +321,7 @@ for module in modules_available:
         modulename = str(module).split(".")
 
     try:
-        moduleref = importlib.import_module("lib.TWCManager." + module)
+        moduleref = importlib.import_module("." + module, package="TWCManager")
         modclassref = getattr(moduleref, modulename[1])
         modinstance = modclassref(master)
 

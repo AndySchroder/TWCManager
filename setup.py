@@ -5,8 +5,7 @@ from setuptools import setup, find_namespace_packages
 setup(
     name="TWCManager",
     version="1.2.0",
-    package_dir={"": "lib"},
-    packages=find_namespace_packages(where="lib"),
+    packages=find_namespace_packages(),
     # Dependencies
     install_requires=[
         "commentjson>=0.8.3",
@@ -15,7 +14,6 @@ setup(
         "requests>=2.23.0",
         "sysv_ipc>=1.0.1",
         "termcolor>=1.1.0",
-        "ww>=0.2.1",
     ],
     # Package Metadata
     author="Nathan Gardiner",

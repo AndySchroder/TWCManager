@@ -2,7 +2,6 @@
 # Publishes the provided key and value pair to the provided topic prefix
 
 from termcolor import colored
-from ww import f
 
 
 class MQTTStatus:

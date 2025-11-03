@@ -1,5 +1,4 @@
 from termcolor import colored
-from ww import f
 
 
 class TWCSlave:

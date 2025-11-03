@@ -1,5 +1,4 @@
 from termcolor import colored
-from ww import f
 
 class MQTTControl:
 
@@ -44,7 +43,7 @@ class MQTTControl:
         # to determine if they represent control messages
         self.master.debugLog(10, "MQTTCtrl", "Attempting to Connect")
         if self.brokerIP:
-            self.client = self.mqtt.Client("MQTTCtrl")
+            self.client = self.mqtt.Client(self.mqtt.CallbackAPIVersion.VERSION2,"MQTTCtrl",protocol=self.mqtt.MQTTv5)
             if self.username and self.password:
                 self.client.username_pw_set(self.username, self.password)
             self.client.on_connect = self.mqttConnect
